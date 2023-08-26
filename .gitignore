@@ -1,0 +1,30 @@
+# Node.js / Express
+node_modules/
+dist/
+.env
+
+# Logs and other data
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp.js
+
+# Editor-specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.komodoproject
+.komodotools/
+.eclipse/
+*.jupyter/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Dependency directories
+bower_components/
+jspm_packages/
