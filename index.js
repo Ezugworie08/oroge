@@ -40,8 +40,8 @@ app.get('/', async (req, res) => {
 // This endpoint will return the last n lines of the log file
 app.get('/file', async (req, res) => {
     const decodedFilePath = decodeURIComponent(req.query.filepath);
-    const searchQuery = decodeURIComponent(req.query.q) || '';
-    const limit = req.query.limit || 5;
+    const searchQuery = !!req.query.q ? req.query.q : '';
+    const limit = req.query.limit ? req.query.limit : 10;
 
     try {       
         let logFilesPaths = await traverseDir(logDir); // get all the log files in the logs directory
@@ -54,7 +54,11 @@ app.get('/file', async (req, res) => {
             res.status(404).json({error: 'Log file not found'});
         }
 
-        const lines = await readLastNLines(decodedFilePath, limit, searchQuery);
+        const lines = await readLastNLines({
+            filePath: decodedFilePath, 
+            nLines: limit, 
+            searchQuery
+        });
         res.json({lines});
     } catch (err){
         console.error('Error', err);

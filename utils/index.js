@@ -40,9 +40,9 @@ const traverseDir = async (rootDir) => {
     }
 };
 
-const readLastNLines = async (filePath, nLines=10, searchString='') => {
+const readLastNLines = async ({filePath, nLines, searchQuery}) => {
     const results = [];
-    const isValidSearchString = typeof searchString === 'string' && searchString.length > 0;
+    const isValidSearchQuery = !!searchQuery && typeof searchQuery !== 'undefined' && searchQuery.length > 0;
 
     try {
         const rl = readline.createInterface({
@@ -52,15 +52,13 @@ const readLastNLines = async (filePath, nLines=10, searchString='') => {
 
         for await (const line of rl) {
     
-            if (isValidSearchString) {
-                const foundSearchString = String(line).includes(searchString);
-
+            if (!isValidSearchQuery) {
+                results.push(line);
+            } else {
+                const foundSearchString = String(line).includes(searchQuery);
                 if (foundSearchString) {
                     results.push(line);
                 }
-
-            } else {
-                results.push(line);
             }
 
             if (results.length > nLines) {
