@@ -28,3 +28,6 @@ Thumbs.db
 # Dependency directories
 bower_components/
 jspm_packages/
+
+# Todos
+todos.txt
