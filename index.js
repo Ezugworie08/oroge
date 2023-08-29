@@ -40,7 +40,7 @@ app.get('/', async (req, res) => {
 // This endpoint will return the last n lines of the log file
 app.get('/file', async (req, res) => {
     const decodedFilePath = decodeURIComponent(req.query.filepath);
-    const searchQuery = !!req.query.q ? req.query.q : '';
+    const searchQuery = !!req.query.q ? decodeURIComponent(req.query.q) : '';
     const limit = req.query.limit ? req.query.limit : 10;
 
     try {       
