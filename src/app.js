@@ -2,6 +2,7 @@ const path = require('path');
 
 const express = require('express');
 
+const { notFoundMiddleware, errorHandlerMiddleware } = require('./middleware');
 const { traverseDir, readLastNLines } = require('./utils/index');
 
 
@@ -67,20 +68,8 @@ app.get('/file', async (req, res) => {
   
 });
 
-
-app.use((req, res, next) => {
-    const error = new Error('Not found');
-    error.status = 404;
-    next(error);
-});
-  
-app.use((err, req, res, next) => {
-    res.status(err.status || 500).json({
-        error: {
-        message: err.message
-        }
-    });
-});
+app.use(notFoundMiddleware);
+app.use(errorHandlerMiddleware);
 
 app.listen(port, () => {
   console.info(`Oroge server is running on port ${port}`);
