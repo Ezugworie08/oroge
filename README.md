@@ -34,7 +34,7 @@ Welcome to the Oroge! This repository contains an Express API built using Node.j
 1. Clone the repository:
 
    ```bash
-   git https://github.com/Ezugworie08/oroge.git
+   git clone https://github.com/Ezugworie08/oroge.git
    cd oroge
    ```
 2. Install the dependencies
