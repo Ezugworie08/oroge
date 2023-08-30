@@ -27,6 +27,7 @@ Welcome to the Oroge! This repository contains an Express API built using Node.j
 
 - Node.js (v18 or higher)
 - npm (v8 or higher)
+- Current OS user (running this API) has admin privileges && permissions to READ `/var/logs` or `C:\\logs` otherwise the test data directory `./test/data` will be used.
 
 ### Installation
 
