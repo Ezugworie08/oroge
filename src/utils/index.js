@@ -89,6 +89,9 @@ const readLastNLines = async ({filePath, nLines, searchQuery}) => {
 
 
 module.exports = {
+    findSearchString, 
+    isValidFile, 
+    isValidDirectoryPath,
     readLastNLines, 
     traverseDir,
 };

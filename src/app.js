@@ -1,22 +1,25 @@
 const express = require('express');
+const morgan = require('morgan'); // Import morgan for logging
 
 const { notFoundMiddleware, errorHandlerMiddleware } = require('./middleware');
 const { logFileRouter, logFilesRouter } = require('./routes');
-const { DEFAULT_PORT } = require('./utils/constants');
-
 
 const app = express();
-const port = process.env.PORT || DEFAULT_PORT;
 
-// app.use(express.urlencoded({ extended: true }));
+// Use morgan for logging HTTP requests
+app.use(morgan('dev'));
+
+// Parse JSON bodies for incoming requests
 app.use(express.json());
 
+// Define routes
+app.use('/logFiles', logFilesRouter); // Use plural form for consistency
 app.use('/logFile', logFileRouter);
-app.use('/logs', logFilesRouter);
 
+// Middleware for handling 404 Not Found
 app.use(notFoundMiddleware);
+
+// Middleware for handling errors
 app.use(errorHandlerMiddleware);
 
-app.listen(port, () => {
-  console.info(`Oroge server is running on port ${port}`);
-});
+module.exports = app;
