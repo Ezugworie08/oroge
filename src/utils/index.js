@@ -51,35 +51,43 @@ const traverseDir = async (rootDir) => {
 };
 
 const readLastNLines = async ({filePath, nLines, searchQuery}) => {
-    const results = [];
-    const isValidSearchQuery = validateSearchQuery(searchQuery);
- 
     if (!fileExists(filePath)) {
         throw new Error("Provided file path does not exist");
     }
 
+    const results = [];
+    const isValidSearchQuery = validateSearchQuery(searchQuery);
+ 
     try {
         const rl = readline.createInterface({
             input: fs.createReadStream(filePath), 
             crlfDelay: Infinity
         });
 
-        for await (const line of rl) {
-
-            if (isValidSearchQuery) {
-                const foundSearchString = findSearchString(line, searchQuery);
-
-                if (foundSearchString) {
-                    results.push(line);
-                } 
-            } else {
-                results.push(line);
-            } 
-
-            if (results.length > nLines) {
-                results.shift();
+        let processingLine = false;
+    
+        rl.on('line', async (line) => {
+            if (processingLine) {
+                await new Promise((resolve) => rl.once('pause', resolve));
             }
-        }
+
+            processingLine = true;
+
+            if (!isValidSearchQuery || findSearchString(line, searchQuery)) {
+                results.push(line);
+
+                if (results.length > nLines) {
+                    results.shift();
+                }
+            }
+
+            processingLine = false;
+            rl.resume();
+        });
+
+        await new Promise((resolve) => {
+            rl.on('close', resolve);
+        });
 
         return results;
     } catch (error) {
