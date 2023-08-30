@@ -54,7 +54,9 @@ The API will be available at `http://localhost:3000`.
 
 ## API Endpoints
 
-- `GET /logFiles`: Get a list of log files in the provided directory. 
+- `GET /logFiles`: Get a list of log files in the respective logs directory (`/var/logs` for unix or `C:\\logs` for windows and `./test/data` as backup). 
+      This endpoint will return a list of objects containing relative paths to the log files and their corresponding URL encoded counterparts. 
+      PLEASE provide the URL encoded paths to the next API endpoint below.
 - `GET /logFile`: Get the last N lines of a log file. 
     - Query parameters:
         - `filepath`: The path to the log file (URL encoded).
