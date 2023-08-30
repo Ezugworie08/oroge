@@ -11,7 +11,8 @@ const dirExists = (dirPath) => fs.existsSync(dirPath) && fs.statSync(dirPath).is
 
 const hasLogDirReadAccess = (logDirPath) => {
     try {
-        return fs.accessSync(logDirPath, fs.constants.R_OK);
+        fs.accessSync(logDirPath, fs.constants.R_OK);
+        return true;
     } catch (error) {
         console.error("Error accessing log directory:", error);
         return false;

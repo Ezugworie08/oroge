@@ -1,7 +1,7 @@
 // constants.js
 const DEFAULT_LIMIT = 10;
 const DEFAULT_PORT = 3000;
-const WINDOWS_ROOT_DIR = 'C:\logs';
+const WINDOWS_ROOT_DIR = 'C:\\logs';
 const UNIX_ROOT_DIR = '/var/log';
 const TEST_ROOT_DIR = '../test/data';
 

@@ -1,8 +1,10 @@
 const assert = require('assert');
 const fs = require('fs').promises;
 const path = require('path');
-const { logDir } = require('../../src/config');
+const { testDir } = require('../../src/config');
 const { findSearchString, readLastNLines, traverseDir } = require('../../src/utils');
+
+const logDir = testDir; 
 
 describe('findSearchString', () => {
     it('should find search string in log line', () => {

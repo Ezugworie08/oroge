@@ -27,7 +27,7 @@ Welcome to the Oroge! This repository contains an Express API built using Node.j
 
 - Node.js (v18 or higher)
 - npm (v8 or higher)
-- Current OS user (running this API) has admin privileges && permissions to READ `/var/log` or `C:\logs` otherwise the test data directory `./test/data` will be used.
+- Current OS user (running this API) has admin privileges && permissions to READ `/var/log` or `C:\\logs` otherwise the test data directory `./test/data` will be used.
 
 ### Installation
 
@@ -55,7 +55,7 @@ The API will be available at `http://localhost:3000`.
 
 ## API Endpoints
 
-- `GET /logFiles`: Get a list of log files in the respective logs directory (`/var/log` for unix or `C:\logs` for windows and `./test/data` as backup). 
+- `GET /logFiles`: Get a list of log files in the respective logs directory (`/var/log` for unix or `C:\\logs` for windows and `./test/data` as backup). 
       This endpoint will return a list of objects containing relative paths to the log files and their corresponding URL encoded counterparts. 
       PLEASE provide the URL encoded paths to the next API endpoint below.
 - `GET /logFile`: Get the last N lines of a log file. 
