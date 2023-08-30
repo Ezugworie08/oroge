@@ -7,7 +7,6 @@ const { traverseDir } = require('../utils');
 const logFilesRouter = express.Router();
 
 logFilesRouter.get('/', async (req, res, next) => {
-    console.log('Getting log files...');
     try {
         const logFiles = await traverseDir(logDir);
         const formattedLogFiles = logFiles
