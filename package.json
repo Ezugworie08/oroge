@@ -1,15 +1,15 @@
 {
   "name": "oroge",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "An Express API for handling log files",
+  "main": "src/server.js",
   "scripts": {
-    "start": "node src/app.js",
+    "start": "node src/server.js",
     "test": "mocha --recursive test"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["express", "api", "logs", "streaming"],
+  "author": "Ike Ezugworie",
+  "license": "MIT",
   "dependencies": {
     "express": "^4.18.2",
     "morgan": "^1.10.0"

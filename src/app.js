@@ -16,6 +16,10 @@ app.use(express.json());
 app.use('/logFiles', logFilesRouter); // Use plural form for consistency
 app.use('/logFile', logFileRouter);
 
+app.get('/health', (req, res) => {
+    res.json({ status: 'ok' });
+});
+
 // Middleware for handling 404 Not Found
 app.use(notFoundMiddleware);
 
