@@ -7,7 +7,7 @@ const app = require('../../src/app');
 describe('Log Files Endpoint', () => {
     it('should return a list of log files', (done) => {
         request(app)
-            .get('/logs')
+            .get('/logFiles')
             .end((err, res) => {
                 if (err) return done(err);
                 expect(res.status).to.equal(200);

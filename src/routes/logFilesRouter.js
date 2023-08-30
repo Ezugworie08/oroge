@@ -10,17 +10,21 @@ logFilesRouter.get('/', async (req, res, next) => {
     try {
         const logFiles = await traverseDir(logDir);
         const formattedLogFiles = logFiles
-           .map(({filePath, fileURL, encodedFilePath}) => {
+           .map((filePath) => {
+                const encodedFilePath = encodeURIComponent(filePath);
                 const { base, dir } = path.parse(filePath);
                 const baseDir = dir.split(logDir).pop();
-                const qFilePath = path.join(baseDir, base);
-                return { qFilePath, fileURL, encodedFilePath};
+                const relativeFilePath = path.join(baseDir, base);
+                return { 
+                    relativeFilePath, 
+                    encodedFilePath
+                };
             })
-           .sort((a, b) => a.qFilePath.localeCompare(b.qFilePath, 'en', {sensitivity: 'base'}));
+           .sort((a, b) => a.relativeFilePath.localeCompare(b.relativeFilePath, 'en', {sensitivity: 'base'}));
 
         res.json({logFiles: formattedLogFiles});
     } catch (error){
-        console.error('Error', error);
+        console.error('Log Files Router Error ->', error);
         next(error);
     }
 });

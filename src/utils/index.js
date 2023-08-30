@@ -2,18 +2,26 @@ const fs = require('fs');
 const fsp = require('fs').promises;
 const path = require('path');
 const readline = require('readline');
-const {URL} = require('url');
 
 
 const validateSearchQuery = (searchQuery) => !!searchQuery && typeof searchQuery !== 'undefined' && searchQuery.length > 0;
 const findSearchString = (logLine, searchString) => validateSearchQuery(searchString) && String(logLine).indexOf(String(searchString)) > -1;
-const isValidFile = (filePath) => fs.existsSync(filePath) && fs.statSync(filePath).isFile();
-const isValidDirectoryPath = (dirPath) => fs.existsSync(dirPath) && fs.statSync(dirPath).isDirectory();
+const fileExists = (filePath) => fs.existsSync(filePath) && fs.statSync(filePath).isFile();
+const dirExists = (dirPath) => fs.existsSync(dirPath) && fs.statSync(dirPath).isDirectory();
+
+const hasLogDirReadAccess = (logDirPath) => {
+    try {
+        return fs.accessSync(logDirPath, fs.constants.R_OK);
+    } catch (error) {
+        console.error("Error accessing log directory:", error);
+        return false;
+    }
+};
 
 const traverseDir = async (rootDir) => {
     const results = [];
 
-    if (!isValidDirectoryPath(rootDir)) {
+    if (!dirExists(rootDir)) {
         throw new Error("Provided directory path does not exist");
     }
 
@@ -28,32 +36,25 @@ const traverseDir = async (rootDir) => {
                 if (stats.isDirectory()) {
                     await walk(filePath); // Recurse into subdirectories
                 } else if (stats.isFile()) {
-                    const fileURL = new URL(`file://${filePath}`);
-                    const encodedFilePath = encodeURIComponent(filePath);
-                    results.push({filePath, fileURL, encodedFilePath});
+                    results.push(filePath);
                 }
             }
 
-        } catch (err) {
-            console.error("Error walking the provided directory:", err);
-            throw new Error(err.message || "Error walking the provided directory");
+        } catch (error) {
+            console.error("Error walking the provided directory:", error);
+            throw new Error(error.message || "Error walking the provided directory");
         }
     };
 
-    try {
-        await walk(rootDir);
-        return results;
-    } catch (err) {
-        console.error("Error listing files in provided directory:", err);
-        throw new Error(err.message || "Error listing files in provided directory");
-    }
+    await walk(rootDir);
+    return results;    
 };
 
 const readLastNLines = async ({filePath, nLines, searchQuery}) => {
     const results = [];
     const isValidSearchQuery = validateSearchQuery(searchQuery);
  
-    if (!isValidFile(filePath)) {
+    if (!fileExists(filePath)) {
         throw new Error("Provided file path does not exist");
     }
 
@@ -81,17 +82,16 @@ const readLastNLines = async ({filePath, nLines, searchQuery}) => {
         }
 
         return results;
-    } catch (err) {
-        console.error("Error reading log file:", err);
-        throw new Error(err.message || "Error reading log file");
+    } catch (error) {
+        console.error("Error reading provided log file:", error);
+        throw new Error(err.message || "Error reading provided log file");
     }
 };
 
 
 module.exports = {
+    hasLogDirReadAccess,
     findSearchString, 
-    isValidFile, 
-    isValidDirectoryPath,
     readLastNLines, 
     traverseDir,
 };

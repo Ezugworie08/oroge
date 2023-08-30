@@ -4,10 +4,11 @@ const expect = chai.expect;
 const request = require('supertest');
 
 const app = require('../../src/app');
+const { logDir} = require('../../src/config');
 
 describe('Log File Endpoint', () => {
     it('should return the last N lines of a log file', (done) => {
-        const filePath = path.join(__dirname, '../../logs', 'OpenStack_2k.log');
+        const filePath = path.join(`${logDir}`, 'hdfs_2k.log');
         request(app)
             .get('/logFile')
             .query({ filepath: encodeURIComponent(filePath), limit: 5 })
