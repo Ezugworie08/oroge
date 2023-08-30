@@ -32,12 +32,18 @@ const traverseDir = async (rootDir) => {
 
             for (const file of files) {
                 const filePath = path.join(currentDir, file);
-                const stats = await fsp.stat(filePath);
 
-                if (stats.isDirectory()) {
-                    await walk(filePath); // Recurse into subdirectories
-                } else if (stats.isFile()) {
-                    results.push(filePath);
+                try {
+
+                    const stats = await fsp.stat(filePath);
+
+                    if (stats.isDirectory()) {
+                        await walk(filePath); // Recurse into subdirectories
+                    } else if (stats.isFile()) {
+                        results.push(filePath);
+                    }
+                } catch (error) {
+                    console.error("Error reading file/directory:", filePath, error);
                 }
             }
 
