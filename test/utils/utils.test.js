@@ -20,7 +20,7 @@ describe('findSearchString', () => {
 
 describe('readLastNLines', () => {
     it('should read last N lines from a file', async () => {
-        const filePath = path.join(`${logDir}`, 'hdfs_2k.log');
+        const filePath = path.join(`${logDir}`, 'hdfs_2k.txt');
         const nLines = 2;
         const searchQuery = 'WARN';
         const lines = await readLastNLines({ filePath, nLines, searchQuery });
@@ -42,8 +42,8 @@ describe('traverseDir', () => {
         const rootDir = path.join(`${logDir}`);
         const results = await traverseDir(rootDir);
         const expectedFilePaths = [
-            path.join(rootDir, 'hdfs_2k.log'),
-            path.join(rootDir, 'hdfs_2k2.log')
+            path.join(rootDir, 'hdfs_2k.txt'),
+            path.join(rootDir, 'hdfs_2k2.txt')
         ];
         assert.deepStrictEqual(results.map(result => result), expectedFilePaths);
     });
