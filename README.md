@@ -62,7 +62,7 @@ The API will be available at `http://localhost:3000`.
     - Query parameters:
         - `filepath`: The path to the log file (URL encoded).
         - `limit`(optional): The number of lines to return. Defaults to ten (10).
-        - `q`(optional): Search query to filter lines. Defaults to an empty string. 
+        - `q`(optional): Search query to filter lines. Defaults to an empty string. PLEASE DO NOT QUOTE YOUR SEARCH STRING[S] 
 - `GET /health`: Get health statistics of API server.
    
 ## Testing
