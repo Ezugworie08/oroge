@@ -96,7 +96,7 @@ const readLastNLines = async ({filePath, nLines, searchQuery}) => {
             rl.on('close', resolve);
         });
 
-        return results;
+        return results.reverse();
     } catch (error) {
         console.error("Error reading provided log file:", error);
         throw new Error(err.message || "Error reading provided log file");
