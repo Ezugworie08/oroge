@@ -19,6 +19,23 @@ const hasLogDirReadAccess = (logDirPath) => {
     }
 };
 
+const isPathWithinDirectory = async (inputPath, targetDirectory) => {
+    try {
+        const absoluteInputPath = path.resolve(inputPath);
+        const absoluteTargetDirectory = path.resolve(targetDirectory);
+    
+        try {
+            await fsp.access(absoluteInputPath); // Check if input path exists
+            return absoluteInputPath.startsWith(absoluteTargetDirectory);
+        } catch (error) {
+            throw new Error('An error occurred while accessing the file system.');
+        }
+      } catch (error) {
+            console.error(error.message);
+            return false;
+      }
+};
+
 const traverseDir = async (rootDir) => {
     const results = [];
 
@@ -105,8 +122,9 @@ const readLastNLines = async ({filePath, nLines, searchQuery}) => {
 
 
 module.exports = {
+    findSearchString,
     hasLogDirReadAccess,
-    findSearchString, 
+    isPathWithinDirectory,
     readLastNLines, 
     traverseDir,
 };

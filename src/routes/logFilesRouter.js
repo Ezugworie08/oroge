@@ -22,7 +22,7 @@ logFilesRouter.get('/', async (req, res, next) => {
             })
            .sort((a, b) => a.relativeFilePath.localeCompare(b.relativeFilePath, 'en', {sensitivity: 'base'}));
 
-        res.json({logFiles: formattedLogFiles});
+        res.status(200).json({logFiles: formattedLogFiles});
     } catch (error){
         console.error('Log Files Router Error ->', error);
         next(error);
