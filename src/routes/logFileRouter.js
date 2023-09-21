@@ -1,6 +1,6 @@
 const express = require('express');
 const { logDir } = require('../config');
-const { readLastNLines, traverseDir } = require('../utils');
+const { isPathWithinDirectory, readLastNLines } = require('../utils');
 
 const logFileRouter = express.Router();
 
@@ -10,13 +10,11 @@ logFileRouter.get('/', async (req, res, next) => {
         const searchQuery =!!req.query.q? decodeURIComponent(req.query.q) : '';
         const limit = req.query.limit? req.query.limit : 10;
 
-        const logFilesPaths = await traverseDir(logDir);
-        const isValidFilePath = logFilesPaths.some((filePath) => filePath === decodedFilePath); // check if the file exists in the logs directory
-        
+        const isValidFilePath = await isPathWithinDirectory(decodedFilePath, logDir);
+   
         if (!isValidFilePath) {
-            console.error(`Log file ${decodeFilePath} not found`);
-            res.status(400).json({error: 'Invalid log file path'});
-            return;
+            console.error(`Log file ${decodedFilePath} not found`);
+            throw new Error(`Provided Log file is INVALID`);
         }
 
         const lines = await readLastNLines({
@@ -25,9 +23,9 @@ logFileRouter.get('/', async (req, res, next) => {
             searchQuery
         });
         
-        res.json({lines});
+        res.status(200).json({lines});
     } catch (error){
-        console.error('Log File Router Error ->', error);
+        console.error('Log File Router Error ->', error.message);
         next(error);
     }
 });
