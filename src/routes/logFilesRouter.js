@@ -3,11 +3,16 @@ const path = require('path');
 const { logDir } = require('../config');
 const { traverseDir } = require('../utils');
 
+const { recursiveDirectoryTraversal, iterativeDirectoryTraversal} = require('../utils/traverse');
+
 
 const logFilesRouter = express.Router();
 
 logFilesRouter.get('/', async (req, res, next) => {
     try {
+        // const logFiles = await recursiveDirectoryTraversal(logDir);
+        // const logFiles = await iterativeDirectoryTraversal(logDir);
+
         const logFiles = await traverseDir(logDir);
         const formattedLogFiles = logFiles
            .map((filePath) => {
