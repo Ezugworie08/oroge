@@ -30,10 +30,10 @@ const isPathWithinDirectory = async (inputPath, targetDirectory) => {
         } catch (error) {
             throw new Error('An error occurred while accessing the file system.');
         }
-      } catch (error) {
-            console.error(error.message);
-            return false;
-      }
+    } catch (error) {
+        console.error(error.message);
+        return false;
+    }
 };
 
 const traverseDir = async (rootDir) => {
