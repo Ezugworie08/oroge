@@ -1,6 +1,7 @@
 const express = require('express');
 const { logDir } = require('../config');
 const { isPathWithinDirectory, readLastNLines } = require('../utils');
+const { fileHandleReadLastNLines } = require('../utils/filehandle');
 
 const logFileRouter = express.Router();
 
@@ -8,7 +9,7 @@ logFileRouter.get('/', async (req, res, next) => {
     try {
         const decodedFilePath = decodeURIComponent(req.query.filepath);
         const searchQuery =!!req.query.q? decodeURIComponent(req.query.q) : '';
-        const limit = req.query.limit? req.query.limit : 10;
+        const limit = req.query.limit? req.query.limit : 100;
 
         const isValidFilePath = await isPathWithinDirectory(decodedFilePath, logDir);
    
@@ -17,7 +18,7 @@ logFileRouter.get('/', async (req, res, next) => {
             throw new Error(`Provided Log file is INVALID`);
         }
 
-        const lines = await readLastNLines({
+        const lines = await fileHandleReadLastNLines({
             filePath: decodedFilePath, 
             nLines: limit, 
             searchQuery
